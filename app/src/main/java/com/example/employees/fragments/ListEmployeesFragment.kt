@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_list_employees.*
 class ListEmployeesFragment : Fragment() {
 
     private lateinit var viewModel: EmployeeViewModel
+    private val adapter = EmployeeAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,13 +35,16 @@ class ListEmployeesFragment : Fragment() {
         setupRecyclerView()
     }
 
+    fun setClickListener(listener : EmployeeAdapter.OnEmployeeClick){
+        adapter.onEmployeeClick = listener
+    }
+
     private fun setupRecyclerView() {
-        val adapter = EmployeeAdapter()
-        adapter.employees = mutableListOf(Employee(id=1,firstName = "Egor",lastName = "Zakharin" , avatarUrl = "https://2.cdn.echo.msk.ru/files/avatar2/2561900.jpg"))
         main_recycler_view_employees.adapter = adapter
         main_recycler_view_employees.layoutManager = LinearLayoutManager(requireContext())
         viewModel.employees?.observe(this@ListEmployeesFragment, {
             adapter.employees = it!!
+            adapter.notifyDataSetChanged()
         })
         viewModel.errors.observe(this@ListEmployeesFragment, {
             Toast.makeText(requireContext(), "error", Toast.LENGTH_LONG).show()
