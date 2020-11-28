@@ -7,5 +7,5 @@ import com.google.gson.annotations.SerializedName
 class ResponseEmployees {
     @SerializedName("response")
     @Expose
-    var response: List<Response>? = null
+    var response: List<Employee>? = null
 }
