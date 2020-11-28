@@ -30,24 +30,26 @@ class ListEmployeesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this@ListEmployeesFragment)[EmployeeViewModel::class.java]
-        setupRecyclerView()
         loadData()
+        setupRecyclerView()
     }
 
     private fun setupRecyclerView() {
         val adapter = EmployeeAdapter()
+        adapter.employees = mutableListOf(Employee(id=1,firstName = "Egor",lastName = "Zakharin" , avatarUrl = "https://2.cdn.echo.msk.ru/files/avatar2/2561900.jpg"))
         main_recycler_view_employees.adapter = adapter
         main_recycler_view_employees.layoutManager = LinearLayoutManager(requireContext())
-        viewModel.employees?.observe(this@ListEmployeesFragment,{
-            adapter.employees = (it as MutableList<Employee>?)!!
+        viewModel.employees?.observe(this@ListEmployeesFragment, {
+            adapter.employees = it!!
         })
-        viewModel.errors.observe(this@ListEmployeesFragment,{
-            Toast.makeText(requireContext(),"error",Toast.LENGTH_LONG).show()
+        viewModel.errors.observe(this@ListEmployeesFragment, {
+            Toast.makeText(requireContext(), "error", Toast.LENGTH_LONG).show()
         })
+
 
     }
 
-    private fun loadData(){
-        viewModel.loadData(api=(activity?.application as? EmployeeApp)?.apiServiceEmployees)
+    private fun loadData() {
+        viewModel.loadData(api = (activity?.application as? EmployeeApp)?.apiServiceEmployees)
     }
 }

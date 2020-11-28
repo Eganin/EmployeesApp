@@ -9,13 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.employees.R
 import com.example.employees.pojo.Employee
 import com.squareup.picasso.Picasso
+import java.lang.IllegalArgumentException
 import java.util.*
 
-class EmployeeAdapter(var employees: MutableList<Employee> = mutableListOf()) :
+class EmployeeAdapter(var employees: List<Employee> = mutableListOf()) :
     RecyclerView.Adapter<EmployeeAdapter.EmployeeViewHolder>() {
 
     interface OnEmployeeClick {
-        fun click(position: Int)
+        fun click(id: Int)
     }
 
     var onEmployeeClick: OnEmployeeClick? = null
@@ -31,7 +32,13 @@ class EmployeeAdapter(var employees: MutableList<Employee> = mutableListOf()) :
 
         init {
             itemView.apply {
-                setOnClickListener { onEmployeeClick?.click(position = adapterPosition) }
+                setOnClickListener {
+                    employees[adapterPosition].id?.let {
+                        onEmployeeClick?.click(
+                            id = it
+                        )
+                    }
+                }
             }
         }
 
@@ -42,7 +49,13 @@ class EmployeeAdapter(var employees: MutableList<Employee> = mutableListOf()) :
                 employee.firstName?.toLowerCase(Locale.ROOT)?.capitalize(Locale.ROOT)
             lastNameTextView.text =
                 employee.lastName?.toLowerCase(Locale.ROOT)?.capitalize(Locale.ROOT)
-            Picasso.get().load(employee.avatarUrl).into(imageAvatar)
+
+            try {
+                Picasso.get().load(employee.avatarUrl).into(imageAvatar)
+            } catch (e: IllegalArgumentException) {
+                e.printStackTrace()
+            }
+
         }
     }
 

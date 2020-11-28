@@ -7,6 +7,7 @@
     android:background="@color/color_500">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:background="@color/color_500"
         android:id="@+id/main_recycler_view_employees"
         android:layout_width="0dp"
         android:layout_height="0dp"
