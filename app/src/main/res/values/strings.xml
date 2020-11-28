@@ -3,4 +3,6 @@
     <string name="first_name_label">First name:</string>
     <string name="last_name_label">Last name:</string>
     <string name="test_text">DIO</string>
+    <string name="birthday_label">Birthday:</string>
+    <string name="speciality_label">Speciality:</string>
 </resources>
