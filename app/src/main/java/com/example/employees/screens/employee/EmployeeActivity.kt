@@ -1,11 +1,11 @@
-package com.example.employees.screens.main
+package com.example.employees.screens.employee
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.employees.R
 import com.example.employees.fragments.ListEmployeesFragment
 
-class MainActivity : AppCompatActivity() {
+class EmployeeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

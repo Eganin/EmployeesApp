@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Employees">
-        <activity android:name=".screens.main.MainActivity">
+        <activity android:name=".screens.employee.EmployeeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

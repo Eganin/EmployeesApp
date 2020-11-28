@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.employees.R
 import com.example.employees.pojo.Employee
 import com.squareup.picasso.Picasso
+import java.util.*
 
 class EmployeeAdapter(var employees: MutableList<Employee> = mutableListOf()) :
     RecyclerView.Adapter<EmployeeAdapter.EmployeeViewHolder>() {
@@ -36,8 +37,11 @@ class EmployeeAdapter(var employees: MutableList<Employee> = mutableListOf()) :
 
         fun bind(position: Int) {
             val employee = employees[position]
-            firstNameTextView.text = employee.firstName
-            lastNameTextView.text = employee.lastName
+            println(employee)
+            firstNameTextView.text =
+                employee.firstName?.toLowerCase(Locale.ROOT)?.capitalize(Locale.ROOT)
+            lastNameTextView.text =
+                employee.lastName?.toLowerCase(Locale.ROOT)?.capitalize(Locale.ROOT)
             Picasso.get().load(employee.avatarUrl).into(imageAvatar)
         }
     }
