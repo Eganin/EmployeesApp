@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package com.example.employees.screens.employee
+package com.example.employees.fragments.list
 
 import android.annotation.SuppressLint
 import android.app.Application
@@ -14,7 +14,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class EmployeeViewModel(application: Application) : AndroidViewModel(application) {
+class ListEmployeeViewModel(application: Application) : AndroidViewModel(application) {
     private val database = DatabaseEmployee.getInstance(context = application.applicationContext)
 
     private val compositeDisposable = CompositeDisposable()
@@ -23,9 +23,6 @@ class EmployeeViewModel(application: Application) : AndroidViewModel(application
 
     var employees = database?.employeeDao()?.getAllEmployees()
 
-    fun getEmployeeById(id: Int): Employee {
-        return GetEmployeeByIdTask().execute(id).get()
-    }
 
     fun insertEmployees(list: List<Employee>) {
         InsertEmployeesTask().execute(list)
@@ -53,13 +50,6 @@ class EmployeeViewModel(application: Application) : AndroidViewModel(application
                     })
             )
         }
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    inner class GetEmployeeByIdTask : AsyncTask<Int, Void, Employee>() {
-        override fun doInBackground(vararg params: Int?): Employee? =
-            params[0]?.let { database?.employeeDao()?.getEmployeeById(employeeId = it) }
-
     }
 
     @SuppressLint("StaticFieldLeak")

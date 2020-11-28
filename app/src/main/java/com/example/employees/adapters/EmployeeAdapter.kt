@@ -44,7 +44,6 @@ class EmployeeAdapter(var employees: List<Employee> = mutableListOf()) :
 
         fun bind(position: Int) {
             val employee = employees[position]
-            println(employee)
             firstNameTextView.text =
                 employee.firstName?.toLowerCase(Locale.ROOT)?.capitalize(Locale.ROOT)
             lastNameTextView.text =
@@ -53,6 +52,7 @@ class EmployeeAdapter(var employees: List<Employee> = mutableListOf()) :
             try {
                 Picasso.get().load(employee.avatarUrl).into(imageAvatar)
             } catch (e: IllegalArgumentException) {
+                imageAvatar.visibility = View.GONE
                 e.printStackTrace()
             }
 

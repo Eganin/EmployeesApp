@@ -4,8 +4,8 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-class ResponseEmployees {
+data class ResponseEmployees (
     @SerializedName("response")
     @Expose
     var response: List<Employee>? = null
-}
+)

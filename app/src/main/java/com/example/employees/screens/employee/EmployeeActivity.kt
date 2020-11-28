@@ -4,8 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.employees.R
 import com.example.employees.adapters.EmployeeAdapter
-import com.example.employees.fragments.DetailInfoFragment
-import com.example.employees.fragments.ListEmployeesFragment
+import com.example.employees.fragments.detailinfo.DetailInfoFragment
+import com.example.employees.fragments.list.ListEmployeesFragment
 
 class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick {
 

@@ -4,12 +4,12 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-class Specialty {
+data class Specialty (
     @SerializedName("specialty_id")
     @Expose
-    var specialtyId: Int? = null
+    var specialtyId: Int? = null,
 
     @SerializedName("name")
     @Expose
     var name: String? = null
-}
+)

@@ -5,4 +5,5 @@
     <string name="test_text">DIO</string>
     <string name="birthday_label">Birthday:</string>
     <string name="speciality_label">Speciality:</string>
+    <string name="back_text_view"><![CDATA[< Back]]></string>
 </resources>

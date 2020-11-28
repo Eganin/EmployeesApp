@@ -1,7 +1,6 @@
-package com.example.employees.fragments
+package com.example.employees.fragments.list
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,15 +10,12 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.employees.R
 import com.example.employees.adapters.EmployeeAdapter
-import com.example.employees.api.ApiServiceEmployees
 import com.example.employees.application.EmployeeApp
-import com.example.employees.pojo.Employee
-import com.example.employees.screens.employee.EmployeeViewModel
 import kotlinx.android.synthetic.main.fragment_list_employees.*
 
 class ListEmployeesFragment : Fragment() {
 
-    private lateinit var viewModel: EmployeeViewModel
+    private lateinit var viewModel: ListEmployeeViewModel
     private val adapter = EmployeeAdapter()
 
     override fun onCreateView(
@@ -30,7 +26,7 @@ class ListEmployeesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this@ListEmployeesFragment)[EmployeeViewModel::class.java]
+        viewModel = ViewModelProviders.of(this@ListEmployeesFragment)[ListEmployeeViewModel::class.java]
         loadData()
         setupRecyclerView()
     }
