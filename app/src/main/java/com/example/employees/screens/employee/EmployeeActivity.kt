@@ -7,25 +7,36 @@ import com.example.employees.adapters.EmployeeAdapter
 import com.example.employees.fragments.detailinfo.DetailInfoFragment
 import com.example.employees.fragments.list.ListEmployeesFragment
 
-class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick {
+class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
+    DetailInfoFragment.OnClickBackToList {
 
-    private val listEmployeesFragment = ListEmployeesFragment()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         supportFragmentManager.beginTransaction().apply {
-            add(R.id.main_container, listEmployeesFragment)
+            add(
+                R.id.main_container,
+                ListEmployeesFragment().apply { setClickListener(listener = this@EmployeeActivity) })
             commit()
         }
-
-        listEmployeesFragment.setClickListener(this@EmployeeActivity)
 
     }
 
     override fun click(id: Int) {
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.main_container, DetailInfoFragment.newInstance(id = id))
+            replace(R.id.main_container, DetailInfoFragment.newInstance(id = id).apply {
+                setClickListener(listener = this@EmployeeActivity)
+            })
+            commit()
+        }
+    }
+
+    override fun click() {
+        supportFragmentManager.beginTransaction().apply {
+            replace(
+                R.id.main_container,
+                ListEmployeesFragment().apply { setClickListener(listener = this@EmployeeActivity) })
             commit()
         }
     }

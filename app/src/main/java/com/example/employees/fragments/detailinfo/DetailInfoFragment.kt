@@ -17,6 +17,12 @@ import java.util.*
 
 class DetailInfoFragment : Fragment() {
 
+    interface OnClickBackToList {
+        fun click()
+    }
+
+    var onClickBackToList: OnClickBackToList? = null
+
     private lateinit var viewModel: DetailInfoViewModel
 
     override fun onCreateView(
@@ -29,23 +35,29 @@ class DetailInfoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         getInfoFromEmployee()
         back_text_view.apply {
-            setOnClickListener {  }
+            setOnClickListener { onClickBackToList?.click() }
         }
+    }
+
+    fun setClickListener(listener : OnClickBackToList){
+        onClickBackToList = listener
     }
 
     private fun getInfoFromEmployee() {
         viewModel = ViewModelProviders.of(this@DetailInfoFragment)[DetailInfoViewModel::class.java]
         val employee = viewModel.getEmployeeById(id = arguments!!.getInt(SAVE_ID_EMPLOYEE))
-        name_label_value.text = employee.firstName?.toLowerCase(Locale.ROOT)?.capitalize(Locale.ROOT)
-        second_name_value.text = employee.lastName?.toLowerCase(Locale.ROOT)?.capitalize(Locale.ROOT)
+        name_label_value.text =
+            employee.firstName?.toLowerCase(Locale.ROOT)?.capitalize(Locale.ROOT)
+        second_name_value.text =
+            employee.lastName?.toLowerCase(Locale.ROOT)?.capitalize(Locale.ROOT)
         birthday_value.text = employee.birthday
         speciality_value.text = getNameSpeciality(employee = employee)
         Picasso.get().load(employee.avatarUrl).into(detail_poster)
     }
 
-    private fun getNameSpeciality(employee : Employee) : String? {
+    private fun getNameSpeciality(employee: Employee): String? {
         val gson = Gson()
-        val objects = gson.fromJson(employee.specialty.toString() , ArrayList::class.java)
+        val objects = gson.fromJson(employee.specialty.toString(), ArrayList::class.java)
         val specialties = mutableListOf<Specialty>()
         objects.forEach { specialties.add(gson.fromJson(it.toString(), Specialty::class.java)) }
 

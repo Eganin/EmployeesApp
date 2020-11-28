@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/very_margin"
-    android:background="@drawable/border_employee_card_view">
+    android:layout_margin="@dimen/small_margin">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -33,7 +32,7 @@
             android:layout_marginBottom="@dimen/very_margin"
             android:text="@string/first_name_label"
             app:layout_constraintStart_toEndOf="@id/image_avatar"
-            app:layout_constraintTop_toTopOf="@id/image_avatar"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -59,7 +58,7 @@
             android:layout_marginBottom="@dimen/very_margin"
             android:text="@string/test_text"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/first_name_label"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
 
         <androidx.appcompat.widget.AppCompatTextView
