@@ -7,10 +7,15 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.employees.R
 import com.example.employees.pojo.Specialty
-import java.util.zip.Inflater
 
 class SpecialityAdapter(var specialties: List<Specialty> = mutableListOf()) :
     RecyclerView.Adapter<SpecialityAdapter.SpecialityViewHolder>() {
+
+    interface OnClickSpeciality {
+        fun clickSpeciality(specialityText: String)
+    }
+
+    var onClickSpeciality: OnClickSpeciality? = null
 
     inner class SpecialityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -18,7 +23,7 @@ class SpecialityAdapter(var specialties: List<Specialty> = mutableListOf()) :
 
         init {
             itemView.apply {
-                setOnClickListener { }
+                setOnClickListener { onClickSpeciality?.clickSpeciality(specialityText = specialtyText.text.toString()) }
             }
         }
 

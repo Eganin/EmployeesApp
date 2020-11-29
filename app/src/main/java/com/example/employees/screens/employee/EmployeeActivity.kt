@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.employees.R
 import com.example.employees.adapters.EmployeeAdapter
+import com.example.employees.adapters.SpecialityAdapter
 import com.example.employees.exceptions.ExceptionFromNavigationView
 import com.example.employees.fragments.detailinfo.DetailInfoFragment
 import com.example.employees.fragments.list.ListEmployeesFragment
@@ -11,7 +12,7 @@ import com.example.employees.fragments.speciality.SpecialityFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
-    DetailInfoFragment.OnClickBackToList {
+    DetailInfoFragment.OnClickBackToList, SpecialityAdapter.OnClickSpeciality {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +21,8 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
             supportFragmentManager.beginTransaction().apply {
                 add(
                     R.id.main_container,
-                    ListEmployeesFragment().apply { setClickListener(listener = this@EmployeeActivity) })
+                    ListEmployeesFragment.newInstance(specialty = null)
+                        .apply { setClickListener(listener = this@EmployeeActivity) })
                 commit()
             }
         }
@@ -47,8 +49,19 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
         supportFragmentManager.beginTransaction().apply {
             replace(
                 R.id.main_container,
-                ListEmployeesFragment().apply { setClickListener(listener = this@EmployeeActivity) })
+                ListEmployeesFragment.newInstance(null)
+                    .apply { setClickListener(listener = this@EmployeeActivity) })
 
+            commit()
+        }
+    }
+
+    override fun clickSpeciality(specialityText : String) {
+        supportFragmentManager.beginTransaction().apply {
+            add(
+                R.id.main_container,
+                ListEmployeesFragment.newInstance(specialty = specialityText)
+                    .apply { setClickListener(listener = this@EmployeeActivity) })
             commit()
         }
     }
@@ -58,7 +71,9 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
             when (it.itemId) {
                 R.id.specialities_menu -> {
                     supportFragmentManager.beginTransaction().apply {
-                        replace(R.id.main_container, SpecialityFragment())
+                        replace(
+                            R.id.main_container,
+                            SpecialityFragment().apply { setListener(listener = this@EmployeeActivity) })
                         commit()
                     }
                     true
@@ -80,4 +95,5 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
             }
         }
     }
+
 }

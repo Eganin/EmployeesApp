@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.employees.R
 import com.example.employees.adapters.EmployeeAdapter
 import com.example.employees.application.EmployeeApp
+import com.example.employees.pojo.Employee
+import com.example.employees.pojo.Specialty
 import kotlinx.android.synthetic.main.fragment_list_employees.*
 
 class ListEmployeesFragment : Fragment() {
@@ -31,6 +33,11 @@ class ListEmployeesFragment : Fragment() {
             ViewModelProviders.of(this@ListEmployeesFragment)[ListEmployeeViewModel::class.java]
         loadData()
         setupRecyclerView()
+        if (savedInstanceState?.getString(SAVE_SPECIALITY) == null) {
+            observeData()
+        } else {
+            observeDataSpeciality(value = savedInstanceState.getString(SAVE_SPECIALITY)!!)
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -54,6 +61,9 @@ class ListEmployeesFragment : Fragment() {
     private fun setupRecyclerView() {
         main_recycler_view_employees.adapter = adapter
         main_recycler_view_employees.layoutManager = LinearLayoutManager(requireContext())
+    }
+
+    private fun observeData() {
         viewModel.employees?.observe(this@ListEmployeesFragment, {
             adapter.employees = it!!
             adapter.notifyDataSetChanged()
@@ -61,11 +71,35 @@ class ListEmployeesFragment : Fragment() {
         viewModel.errors.observe(this@ListEmployeesFragment, {
             Toast.makeText(requireContext(), "error", Toast.LENGTH_LONG).show()
         })
-
-
     }
+
+    private fun observeDataSpeciality(value: String) {
+        viewModel.employees?.observe(this@ListEmployeesFragment, {
+            adapter.employees = it.filter {
+                it.specialty?.get(0)?.name == value
+            }
+            adapter.notifyDataSetChanged()
+        })
+        viewModel.errors.observe(this@ListEmployeesFragment, {
+            Toast.makeText(requireContext(), "error", Toast.LENGTH_LONG).show()
+        })
+    }
+
 
     private fun loadData() {
         viewModel.loadData(api = (activity?.application as? EmployeeApp)?.apiServiceEmployees)
+    }
+
+    companion object {
+
+        fun newInstance(specialty: String?): ListEmployeesFragment {
+            val args = Bundle()
+            val fragment = ListEmployeesFragment()
+            specialty?.let { args.putString(SAVE_SPECIALITY, it) }
+            fragment.arguments = args
+            return fragment
+        }
+
+        const val SAVE_SPECIALITY = "SAVE_SPECIALITY"
     }
 }

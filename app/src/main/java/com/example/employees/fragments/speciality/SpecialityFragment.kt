@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.specialities_fragment.*
 class SpecialityFragment : Fragment() {
 
     private lateinit var viewModel: SpecialityViewModel
+    private val adapter = SpecialityAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,9 +28,11 @@ class SpecialityFragment : Fragment() {
         setupRecyclerView()
     }
 
-    private fun setupRecyclerView() {
-        val adapter = SpecialityAdapter()
+    fun setListener(listener: SpecialityAdapter.OnClickSpeciality) {
+        adapter.onClickSpeciality = listener
+    }
 
+    private fun setupRecyclerView() {
         speciality_recycler_view.layoutManager = LinearLayoutManager(requireContext())
         speciality_recycler_view.adapter = adapter
 
