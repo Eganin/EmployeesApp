@@ -6,4 +6,7 @@
     <string name="birthday_label">Birthday:</string>
     <string name="speciality_label">Speciality:</string>
     <string name="back_text_view"><![CDATA[< Back]]></string>
+    <string name="specialities_appbar_text">Specialities</string>
+    <string name="specialities_menu">Specialities</string>
+    <string name="employees_menu">Employees</string>
 </resources>

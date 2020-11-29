@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.employees.R
 import com.example.employees.adapters.EmployeeAdapter
+import com.example.employees.exceptions.ExceptionFromNavigationView
 import com.example.employees.fragments.detailinfo.DetailInfoFragment
 import com.example.employees.fragments.list.ListEmployeesFragment
+import com.example.employees.fragments.speciality.SpecialityFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
     DetailInfoFragment.OnClickBackToList {
@@ -13,17 +16,25 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction().apply {
+                add(
+                    R.id.main_container,
+                    ListEmployeesFragment().apply { setClickListener(listener = this@EmployeeActivity) })
+                commit()
+            }
+        }
 
-        supportFragmentManager.beginTransaction().apply {
-            add(
-                R.id.main_container,
-                ListEmployeesFragment().apply { setClickListener(listener = this@EmployeeActivity) })
-            commit()
+        try {
+            handlerClickNavigationView()
+        } catch (e: ExceptionFromNavigationView) {
+            e.printStackTrace()
         }
 
     }
 
     override fun click(id: Int) {
+
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.main_container, DetailInfoFragment.newInstance(id = id).apply {
                 setClickListener(listener = this@EmployeeActivity)
@@ -32,12 +43,41 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
         }
     }
 
-    override fun click() {
+    override fun clickToBack() {
         supportFragmentManager.beginTransaction().apply {
             replace(
                 R.id.main_container,
                 ListEmployeesFragment().apply { setClickListener(listener = this@EmployeeActivity) })
+
             commit()
+        }
+    }
+
+    private fun handlerClickNavigationView() {
+        navigation_view_main.setNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.specialities_menu -> {
+                    supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.main_container, SpecialityFragment())
+                        commit()
+                    }
+                    true
+                }
+
+                R.id.employees_menu -> {
+                    supportFragmentManager.beginTransaction().apply {
+                        replace(
+                            R.id.main_container,
+                            ListEmployeesFragment().apply { setClickListener(listener = this@EmployeeActivity) })
+                        commit()
+                    }
+                    true
+                }
+
+                else -> {
+                    throw ExceptionFromNavigationView()
+                }
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ class ListEmployeeViewModel(application: Application) : AndroidViewModel(applica
     var employees = database?.employeeDao()?.getAllEmployees()
 
 
-    fun insertEmployees(list: List<Employee>) {
+    private fun insertEmployees(list: List<Employee>) {
         InsertEmployeesTask().execute(list)
     }
 
@@ -32,7 +32,7 @@ class ListEmployeeViewModel(application: Application) : AndroidViewModel(applica
         DeleteEmployeeTask().execute(employee)
     }
 
-    fun deleteAllEmployees() {
+    private fun deleteAllEmployees() {
         DeleteAllEmployeesTask().execute()
     }
 
@@ -53,7 +53,7 @@ class ListEmployeeViewModel(application: Application) : AndroidViewModel(applica
     }
 
     @SuppressLint("StaticFieldLeak")
-    inner class InsertEmployeesTask : AsyncTask<List<Employee>, Void, Void>() {
+    private inner class InsertEmployeesTask : AsyncTask<List<Employee>, Void, Void>() {
         override fun doInBackground(vararg params: List<Employee>?): Void? {
             params[0]?.let { database?.employeeDao()?.insertEmployees(employees = it) }
             return null
@@ -62,7 +62,7 @@ class ListEmployeeViewModel(application: Application) : AndroidViewModel(applica
     }
 
     @SuppressLint("StaticFieldLeak")
-    inner class DeleteEmployeeTask : AsyncTask<Employee, Void, Void>() {
+    private inner class DeleteEmployeeTask : AsyncTask<Employee, Void, Void>() {
         override fun doInBackground(vararg params: Employee?): Void? {
             params[0]?.let { database?.employeeDao()?.deleteEmployee(employee = it) }
             return null

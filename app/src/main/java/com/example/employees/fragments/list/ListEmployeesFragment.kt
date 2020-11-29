@@ -1,5 +1,6 @@
 package com.example.employees.fragments.list
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,12 +27,27 @@ class ListEmployeesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this@ListEmployeesFragment)[ListEmployeeViewModel::class.java]
+        viewModel =
+            ViewModelProviders.of(this@ListEmployeesFragment)[ListEmployeeViewModel::class.java]
         loadData()
         setupRecyclerView()
     }
 
-    fun setClickListener(listener : EmployeeAdapter.OnEmployeeClick){
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        if (context is EmployeeAdapter.OnEmployeeClick) {
+            adapter.onEmployeeClick = context
+
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        adapter.onEmployeeClick = null
+    }
+
+    fun setClickListener(listener: EmployeeAdapter.OnEmployeeClick) {
         adapter.onEmployeeClick = listener
     }
 

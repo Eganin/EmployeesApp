@@ -5,8 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.employees.pojo.Employee
+import com.example.employees.pojo.Specialty
 
-@Database(entities = [Employee::class], version = 1, exportSchema = false)
+@Database(entities = [Employee::class,Specialty::class], version = 2, exportSchema = false)
 abstract class DatabaseEmployee : RoomDatabase() {
     abstract fun employeeDao(): EmployeesDao
 

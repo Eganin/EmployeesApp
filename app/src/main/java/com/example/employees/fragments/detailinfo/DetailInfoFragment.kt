@@ -1,10 +1,14 @@
 package com.example.employees.fragments.detailinfo
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.employees.R
@@ -18,7 +22,7 @@ import java.util.*
 class DetailInfoFragment : Fragment() {
 
     interface OnClickBackToList {
-        fun click()
+        fun clickToBack()
     }
 
     var onClickBackToList: OnClickBackToList? = null
@@ -34,12 +38,25 @@ class DetailInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getInfoFromEmployee()
-        back_text_view.apply {
-            setOnClickListener { onClickBackToList?.click() }
+
+        view.findViewById<AppCompatImageView>(R.id.detail_poster).apply {
+            setOnClickListener { onClickBackToList?.clickToBack() }
         }
     }
 
-    fun setClickListener(listener : OnClickBackToList){
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnClickBackToList) {
+            onClickBackToList = context
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        onClickBackToList = null
+    }
+
+    fun setClickListener(listener: OnClickBackToList) {
         onClickBackToList = listener
     }
 
@@ -52,7 +69,13 @@ class DetailInfoFragment : Fragment() {
             employee.lastName?.toLowerCase(Locale.ROOT)?.capitalize(Locale.ROOT)
         birthday_value.text = employee.birthday
         speciality_value.text = getNameSpeciality(employee = employee)
-        Picasso.get().load(employee.avatarUrl).into(detail_poster)
+        viewModel.insertSpeciality(speciality = getSpeciality(employee = employee))
+        try {
+            Picasso.get().load(employee.avatarUrl).into(detail_poster)
+        } catch (e: IllegalArgumentException) {
+            e.printStackTrace()
+        }
+
     }
 
     private fun getNameSpeciality(employee: Employee): String? {
@@ -62,6 +85,15 @@ class DetailInfoFragment : Fragment() {
         objects.forEach { specialties.add(gson.fromJson(it.toString(), Specialty::class.java)) }
 
         return specialties[0].name
+    }
+
+    private fun getSpeciality(employee: Employee): Specialty {
+        val gson = Gson()
+        val objects = gson.fromJson(employee.specialty.toString(), ArrayList::class.java)
+        val specialties = mutableListOf<Specialty>()
+        objects.forEach { specialties.add(gson.fromJson(it.toString(), Specialty::class.java)) }
+
+        return specialties[0]
     }
 
 
