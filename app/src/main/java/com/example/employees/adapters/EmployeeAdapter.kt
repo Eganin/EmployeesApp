@@ -1,7 +1,6 @@
 package com.example.employees.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.employees.R
@@ -9,7 +8,6 @@ import com.example.employees.pojo.Employee
 import com.example.employees.viewholders.EmployeeViewHolder
 import com.example.employees.viewholders.InfoViewHolder
 import com.example.employees.viewholders.MainViewHolder
-import java.lang.IndexOutOfBoundsException
 
 
 class EmployeeAdapter : RecyclerView.Adapter<MainViewHolder>() {
@@ -25,7 +23,7 @@ class EmployeeAdapter : RecyclerView.Adapter<MainViewHolder>() {
     override fun getItemViewType(position: Int) =
         when (position) {
             0 -> ViewTypes.VIEW_HEADER.value
-            employees.size+1  -> ViewTypes.VIEW_FOOTER.value
+            employees.size + 1 -> ViewTypes.VIEW_HEADER.value
             else -> ViewTypes.VIEW_EMPLOYEE.value
         }
 
@@ -33,12 +31,6 @@ class EmployeeAdapter : RecyclerView.Adapter<MainViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder =
         when (viewType) {
             ViewTypes.VIEW_HEADER.value -> {
-                InfoViewHolder(
-                    itemView = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.info_item, parent, false)
-                )
-            }
-            ViewTypes.VIEW_FOOTER.value -> {
                 InfoViewHolder(
                     itemView = LayoutInflater.from(parent.context)
                         .inflate(R.layout.info_item, parent, false)
@@ -58,25 +50,21 @@ class EmployeeAdapter : RecyclerView.Adapter<MainViewHolder>() {
 
         when (holder) {
             is EmployeeViewHolder -> {
-                //println(employees.size+2)
-                try{
-                    val employee = employees[position - 1]
-                    holder.itemView.apply {
-                        setOnClickListener {
-                            employee.id?.let {
-                                onEmployeeClick?.click(
-                                    id = it
-                                )
-                            }
+                val employee = employees[position - 1]
+                holder.itemView.apply {
+                    setOnClickListener {
+                        employee.id?.let {
+                            onEmployeeClick?.click(
+                                id = it
+                            )
                         }
                     }
+                }
 
-                    holder.bind(employee = employee)
-                }catch (e : IndexOutOfBoundsException){}
+                holder.bind(employee = employee)
             }
 
             is InfoViewHolder -> {
-                println(employees.size+2)
                 if (position == 0) {
                     holder.bind(text = "")
                 } else {
@@ -87,7 +75,7 @@ class EmployeeAdapter : RecyclerView.Adapter<MainViewHolder>() {
 
     }
 
-    override fun getItemCount(): Int = employees.size+2
+    override fun getItemCount(): Int = employees.size + 2
 
     fun bindEmployees(employees: List<Employee>) {
         this.employees = employees
@@ -98,5 +86,4 @@ class EmployeeAdapter : RecyclerView.Adapter<MainViewHolder>() {
 enum class ViewTypes(val value: Int) {
     VIEW_HEADER(value = 1),
     VIEW_EMPLOYEE(value = 2),
-    VIEW_FOOTER(value = 3)
 }

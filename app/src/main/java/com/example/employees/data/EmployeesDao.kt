@@ -1,10 +1,7 @@
 package com.example.employees.data
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.example.employees.pojo.Employee
 import com.example.employees.pojo.Specialty
 
@@ -17,7 +14,7 @@ interface EmployeesDao {
     @Query("SELECT * FROM employees WHERE id == :employeeId")
     fun getEmployeeById(employeeId: Int): Employee
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertEmployees(employees: List<Employee>)
 
     @Delete
@@ -29,10 +26,10 @@ interface EmployeesDao {
     @Query("SELECT * FROM speciality")
     fun getAllSpecialities(): LiveData<List<Specialty>>
 
-    @Query("SELECT * FROM speciality WHERE specialtyId == :specialityId")
+    @Query("SELECT * FROM speciality WHERE specialty_id == :specialityId")
     fun getSpecialityById(specialityId: Int): Specialty
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertSpeciality(speciality: Specialty)
 
     @Delete

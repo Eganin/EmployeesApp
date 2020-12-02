@@ -37,7 +37,7 @@ class SpecialityFragment : Fragment() {
         speciality_recycler_view.adapter = adapter
 
         viewModel.specialities?.observe(this@SpecialityFragment, {
-            adapter.specialties = it
+            adapter.bindSpecialties(specialties = it)
             adapter.notifyDataSetChanged()
         })
     }
