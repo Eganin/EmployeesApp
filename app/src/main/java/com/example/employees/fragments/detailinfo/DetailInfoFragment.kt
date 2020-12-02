@@ -5,17 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
 import com.example.employees.R
 import com.example.employees.pojo.Employee
 import com.example.employees.pojo.Specialty
+import com.example.employees.viewholders.EmployeeViewHolder
 import com.google.gson.Gson
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.detail_info_fragment.*
 import java.util.*
 
@@ -70,11 +68,11 @@ class DetailInfoFragment : Fragment() {
         birthday_value.text = employee.birthday
         speciality_value.text = getNameSpeciality(employee = employee)
         viewModel.insertSpeciality(speciality = getSpeciality(employee = employee))
-        try {
-            Picasso.get().load(employee.avatarUrl).into(detail_poster)
-        } catch (e: IllegalArgumentException) {
-            e.printStackTrace()
-        }
+
+        Glide.with(requireContext())
+            .load(employee.avatarUrl)
+            .apply(EmployeeViewHolder.imageOptions)
+            .into(detail_poster)
 
     }
 
