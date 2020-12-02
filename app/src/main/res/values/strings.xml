@@ -9,4 +9,6 @@
     <string name="specialities_appbar_text">Specialities</string>
     <string name="specialities_menu">Seen specialities</string>
     <string name="employees_menu">Employees</string>
+    <string name="employees_title">Employees:</string>
+    <string name="all_title">All:</string>
 </resources>

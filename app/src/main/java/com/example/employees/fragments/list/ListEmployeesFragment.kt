@@ -65,8 +65,7 @@ class ListEmployeesFragment : Fragment() {
 
     private fun observeData() {
         viewModel.employees?.observe(this@ListEmployeesFragment, {
-            adapter.employees = it!!
-            adapter.notifyDataSetChanged()
+            adapter.bindEmployees(it!!)
         })
         viewModel.errors.observe(this@ListEmployeesFragment, {
             Toast.makeText(requireContext(), "error", Toast.LENGTH_LONG).show()
@@ -75,10 +74,9 @@ class ListEmployeesFragment : Fragment() {
 
     private fun observeDataSpeciality(value: String) {
         viewModel.employees?.observe(this@ListEmployeesFragment, {
-            adapter.employees = it.filter {
+            adapter.bindEmployees(it.filter {
                 it.specialty?.get(0)?.name == value
-            }
-            adapter.notifyDataSetChanged()
+            })
         })
         viewModel.errors.observe(this@ListEmployeesFragment, {
             Toast.makeText(requireContext(), "error", Toast.LENGTH_LONG).show()
