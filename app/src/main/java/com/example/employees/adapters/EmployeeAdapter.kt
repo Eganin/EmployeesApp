@@ -79,8 +79,10 @@ class EmployeeAdapter : RecyclerView.Adapter<MainViewHolder>() {
 
     fun bindEmployees(employees: List<Employee>) {
         this.employees = employees
-        notifyDataSetChanged()
+        //notifyDataSetChanged()
     }
+
+    fun getData() = employees
 }
 
 enum class ViewTypes(val value: Int) {

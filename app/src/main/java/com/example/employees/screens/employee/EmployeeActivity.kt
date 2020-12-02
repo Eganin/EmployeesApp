@@ -12,7 +12,7 @@ import com.example.employees.fragments.speciality.SpecialityFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
-    DetailInfoFragment.OnClickBackToList, SpecialityAdapter.OnClickSpeciality {
+    SpecialityAdapter.OnClickSpeciality {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +23,7 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
                     R.id.main_container,
                     ListEmployeesFragment.newInstance(specialty = null)
                         .apply { setClickListener(listener = this@EmployeeActivity) })
+                addToBackStack(null)
                 commit()
             }
         }
@@ -38,20 +39,8 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
     override fun click(id: Int) {
 
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.main_container, DetailInfoFragment.newInstance(id = id).apply {
-                setClickListener(listener = this@EmployeeActivity)
-            })
-            commit()
-        }
-    }
-
-    override fun clickToBack() {
-        supportFragmentManager.beginTransaction().apply {
-            replace(
-                R.id.main_container,
-                ListEmployeesFragment.newInstance(null)
-                    .apply { setClickListener(listener = this@EmployeeActivity) })
-
+            replace(R.id.main_container, DetailInfoFragment.newInstance(id = id))
+            addToBackStack(null)
             commit()
         }
     }
@@ -62,6 +51,7 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
                 R.id.main_container,
                 ListEmployeesFragment.newInstance(specialty = specialityText)
                     .apply { setClickListener(listener = this@EmployeeActivity) })
+            addToBackStack(null)
             commit()
         }
     }
@@ -74,6 +64,7 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
                         replace(
                             R.id.main_container,
                             SpecialityFragment().apply { setListener(listener = this@EmployeeActivity) })
+                        addToBackStack(null)
                         commit()
                     }
                     true
@@ -83,7 +74,8 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
                     supportFragmentManager.beginTransaction().apply {
                         replace(
                             R.id.main_container,
-                            ListEmployeesFragment().apply { setClickListener(listener = this@EmployeeActivity) })
+                            ListEmployeesFragment.newInstance(specialty = null).apply { setClickListener(listener = this@EmployeeActivity) })
+                        addToBackStack(null)
                         commit()
                     }
                     true

@@ -19,11 +19,6 @@ import java.util.*
 
 class DetailInfoFragment : Fragment() {
 
-    interface OnClickBackToList {
-        fun clickToBack()
-    }
-
-    var onClickBackToList: OnClickBackToList? = null
 
     private lateinit var viewModel: DetailInfoViewModel
 
@@ -37,26 +32,8 @@ class DetailInfoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         getInfoFromEmployee()
 
-        view.findViewById<AppCompatImageView>(R.id.detail_poster).apply {
-            setOnClickListener { onClickBackToList?.clickToBack() }
-        }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnClickBackToList) {
-            onClickBackToList = context
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        onClickBackToList = null
-    }
-
-    fun setClickListener(listener: OnClickBackToList) {
-        onClickBackToList = listener
-    }
 
     private fun getInfoFromEmployee() {
         viewModel = ViewModelProviders.of(this@DetailInfoFragment)[DetailInfoViewModel::class.java]
@@ -76,15 +53,6 @@ class DetailInfoFragment : Fragment() {
 
     }
 
-    private fun getNameSpeciality(employee: Employee): String? {
-        val gson = Gson()
-        val objects = gson.fromJson(employee.specialty.toString(), ArrayList::class.java)
-        val specialties = mutableListOf<Specialty>()
-        objects.forEach { specialties.add(gson.fromJson(it.toString(), Specialty::class.java)) }
-
-        return specialties[0].name
-    }
-
     private fun getSpeciality(employee: Employee): Specialty {
         val gson = Gson()
         val objects = gson.fromJson(employee.specialty.toString(), ArrayList::class.java)
@@ -96,6 +64,16 @@ class DetailInfoFragment : Fragment() {
 
 
     companion object {
+
+        fun getNameSpeciality(employee: Employee): String? {
+            val gson = Gson()
+            val objects = gson.fromJson(employee.specialty.toString(), ArrayList::class.java)
+            val specialties = mutableListOf<Specialty>()
+            objects.forEach { specialties.add(gson.fromJson(it.toString(), Specialty::class.java)) }
+
+            return specialties[0].name
+        }
+
         fun newInstance(id: Int): DetailInfoFragment {
             val fragment = DetailInfoFragment()
             val bundle = Bundle()

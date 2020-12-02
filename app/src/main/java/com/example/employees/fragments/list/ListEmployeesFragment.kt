@@ -8,10 +8,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.employees.R
 import com.example.employees.adapters.EmployeeAdapter
 import com.example.employees.application.EmployeeApp
+import com.example.employees.comon.DiffUtilCallback
+import com.example.employees.comon.WrapContentLinearLayoutManager
+import com.example.employees.fragments.detailinfo.DetailInfoFragment
 import com.example.employees.pojo.Employee
 import com.example.employees.pojo.Specialty
 import kotlinx.android.synthetic.main.fragment_list_employees.*
@@ -33,10 +37,24 @@ class ListEmployeesFragment : Fragment() {
             ViewModelProviders.of(this@ListEmployeesFragment)[ListEmployeeViewModel::class.java]
         loadData()
         setupRecyclerView()
-        if (savedInstanceState?.getString(SAVE_SPECIALITY) == null) {
+        if (arguments?.getString(SAVE_SPECIALITY) == null) {
             observeData()
         } else {
-            observeDataSpeciality(value = savedInstanceState.getString(SAVE_SPECIALITY)!!)
+            observeDataSpeciality(value = arguments?.getString(SAVE_SPECIALITY)!!)
+        }
+
+        shuffle_float_button.apply {
+            setOnClickListener {
+                val shuffledList = adapter.getData().shuffled()
+                val originalList = adapter.getData()
+                adapter.bindEmployees(shuffledList)
+
+                val diffUtilCallback =
+                    DiffUtilCallback(oldData = originalList, newData = shuffledList)
+                val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(diffUtilCallback)
+                diffResult.dispatchUpdatesTo(adapter)
+
+            }
         }
     }
 
@@ -60,12 +78,14 @@ class ListEmployeesFragment : Fragment() {
 
     private fun setupRecyclerView() {
         main_recycler_view_employees.adapter = adapter
-        main_recycler_view_employees.layoutManager = LinearLayoutManager(requireContext())
+        main_recycler_view_employees.layoutManager =
+            WrapContentLinearLayoutManager(context = requireContext())
     }
 
     private fun observeData() {
         viewModel.employees?.observe(this@ListEmployeesFragment, {
             adapter.bindEmployees(it!!)
+            adapter.notifyDataSetChanged()
         })
         viewModel.errors.observe(this@ListEmployeesFragment, {
             Toast.makeText(requireContext(), "error", Toast.LENGTH_LONG).show()
@@ -75,8 +95,10 @@ class ListEmployeesFragment : Fragment() {
     private fun observeDataSpeciality(value: String) {
         viewModel.employees?.observe(this@ListEmployeesFragment, {
             adapter.bindEmployees(it.filter {
-                it.specialty?.get(0)?.name == value
+                DetailInfoFragment.getNameSpeciality(it) == value
             })
+
+            adapter.notifyDataSetChanged()
         })
         viewModel.errors.observe(this@ListEmployeesFragment, {
             Toast.makeText(requireContext(), "error", Toast.LENGTH_LONG).show()

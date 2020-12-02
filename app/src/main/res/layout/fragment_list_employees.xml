@@ -7,13 +7,24 @@
     android:background="@color/color_500">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:background="@color/color_500"
         android:id="@+id/main_recycler_view_employees"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/color_500"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/shuffle_float_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/very_margin"
+        android:layout_marginRight="@dimen/very_margin"
+        android:layout_marginBottom="@dimen/very_margin"
+        android:src="@drawable/ic_baseline_shuffle_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
