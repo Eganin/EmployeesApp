@@ -6,6 +6,7 @@ import com.example.employees.R
 import com.example.employees.adapters.EmployeeAdapter
 import com.example.employees.adapters.SpecialityAdapter
 import com.example.employees.exceptions.ExceptionFromNavigationView
+import com.example.employees.fragments.addemployee.AddEmployeeFragment
 import com.example.employees.fragments.detailinfo.DetailInfoFragment
 import com.example.employees.fragments.list.ListEmployeesFragment
 import com.example.employees.fragments.speciality.SpecialityFragment
@@ -77,6 +78,14 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
                             ListEmployeesFragment.newInstance(firstStart = false, specialty = null)
                                 .apply { setClickListener(listener = this@EmployeeActivity) })
                         addToBackStack(null)
+                        commit()
+                    }
+                    true
+                }
+
+                R.id.add_employee_menu -> {
+                    supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.main_container, AddEmployeeFragment())
                         commit()
                     }
                     true

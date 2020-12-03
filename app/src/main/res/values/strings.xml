@@ -11,4 +11,9 @@
     <string name="employees_menu">Employees</string>
     <string name="employees_title">Employees:</string>
     <string name="all_title">All:</string>
+    <string name="add_employee_title_menu">Add employee</string>
+    <string name="enter_first_name_hint">Enter first name:</string>
+    <string name="enter_last_name_hint">Enter last name:</string>
+    <string name="enter_birthday_employee_hint">Enter birthday employee:</string>
+    <string name="choice_speciality_hint">Choice Speciality:</string>
 </resources>
