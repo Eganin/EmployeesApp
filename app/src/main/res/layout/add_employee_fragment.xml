@@ -29,6 +29,10 @@
                 android:layout_height="match_parent">
 
                 <ImageView
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_margin="@dimen/very_margin"
                     android:id="@+id/add_image_employee"
                     android:layout_width="match_parent"
@@ -37,7 +41,6 @@
                     android:fitsSystemWindows="true"
                     android:src="@drawable/ic_baseline_add_a_photo_24"
                     app:layout_collapseMode="parallax" />
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -176,27 +179,16 @@
                 app:layout_constraintTop_toBottomOf="@id/birthday_label_employee"
                 tools:ignore="MissingConstraints" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/speciality_edit"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_margin="@dimen/very_margin"
-                android:background="@color/color_200"
-                android:hint="@string/choice_speciality_hint"
-                app:endIconMode="clear_text"
+            <Spinner
+                app:layout_constraintTop_toTopOf="@id/speciality_label_employee"
                 app:layout_constraintBottom_toBottomOf="@id/speciality_label_employee"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/detail_guideline_employee"
-                app:layout_constraintTop_toTopOf="@id/speciality_label_employee">
-
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/color_200"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_margin="@dimen/very_margin"
+                android:id="@+id/speciality_edit"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="45dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

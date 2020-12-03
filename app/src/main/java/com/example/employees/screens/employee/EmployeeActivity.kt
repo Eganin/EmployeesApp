@@ -1,5 +1,8 @@
 package com.example.employees.screens.employee
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.employees.R
@@ -13,7 +16,7 @@ import com.example.employees.fragments.speciality.SpecialityFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
-    SpecialityAdapter.OnClickSpeciality {
+    SpecialityAdapter.OnClickSpeciality, AddEmployeeFragment.SelectedImage {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +60,12 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
         }
     }
 
+    override fun getImageFromIntent(data: Intent?): Bitmap {
+        val imageUri = data?.data
+        val imageStream = contentResolver.openInputStream(imageUri!!)
+        return BitmapFactory.decodeStream(imageStream)
+    }
+
     private fun handlerClickNavigationView() {
         navigation_view_main.setNavigationItemSelectedListener {
             when (it.itemId) {
@@ -97,5 +106,6 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
             }
         }
     }
+
 
 }
