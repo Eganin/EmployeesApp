@@ -24,7 +24,7 @@ class ListEmployeeViewModel(application: Application) : AndroidViewModel(applica
     var employees = database?.employeeDao()?.getAllEmployees()
 
 
-    private fun insertEmployees(list: List<Employee>) {
+    fun insertEmployees(list: List<Employee>) {
         InsertEmployeesTask().execute(list)
     }
 

@@ -1,5 +1,6 @@
 package com.example.employees.fragments.speciality
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,16 @@ class SpecialityFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this)[SpecialityViewModel::class.java]
         setupRecyclerView()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        adapter.onClickSpeciality = context as? SpecialityAdapter.OnClickSpeciality
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        adapter.onClickSpeciality = null
     }
 
     fun setListener(listener: SpecialityAdapter.OnClickSpeciality) {

@@ -16,4 +16,8 @@
     <string name="enter_last_name_hint">Enter last name:</string>
     <string name="enter_birthday_employee_hint">Enter birthday employee:</string>
     <string name="choice_speciality_hint">Choice Speciality:</string>
+    <string name="add_employee_text_button">Add Employee</string>
+    <string name="choice_date_label">Choice date:</string>
+    <string name="add_emplouee_toast">Employee added</string>
+    <string name="error_toast">Input data , please</string>
 </resources>

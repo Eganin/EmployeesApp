@@ -86,7 +86,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/name_label_edit"
                 android:layout_width="0dp"
-                android:layout_height="45dp"
+                android:layout_height="60dp"
                 android:layout_margin="@dimen/very_margin"
                 android:background="@color/color_200"
                 android:hint="@string/enter_first_name_hint"
@@ -118,7 +118,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/last_name_edit"
                 android:layout_width="0dp"
-                android:layout_height="45dp"
+                android:layout_height="60dp"
                 android:layout_margin="@dimen/very_margin"
                 android:background="@color/color_200"
                 android:hint="@string/enter_last_name_hint"
@@ -147,25 +147,17 @@
                 app:layout_constraintTop_toBottomOf="@id/second_name_label_employee"
                 tools:ignore="MissingConstraints" />
 
-            <com.google.android.material.textfield.TextInputLayout
+            <Button
                 android:id="@+id/birthday_edit"
                 android:layout_width="0dp"
-                android:layout_height="45dp"
+                android:layout_height="60dp"
                 android:layout_margin="@dimen/very_margin"
-                android:background="@color/color_200"
-                android:hint="@string/enter_birthday_employee_hint"
-                app:endIconMode="clear_text"
+                android:text="@string/choice_date_label"
                 app:layout_constraintBottom_toBottomOf="@id/birthday_label_employee"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/detail_guideline_employee"
-                app:layout_constraintTop_toTopOf="@id/birthday_label_employee">
+                app:layout_constraintTop_toTopOf="@id/birthday_label_employee"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/color_200" />
-
-            </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/speciality_label_employee"
@@ -188,7 +180,18 @@
                 android:id="@+id/speciality_edit"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
-                android:layout_height="45dp"/>
+                android:layout_height="60dp"/>
+
+            <Button
+                android:id="@+id/send_data"
+                android:layout_margin="@dimen/very_margin"
+                style="@style/TitleText"
+                android:text="@string/add_employee_text_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/speciality_label_employee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

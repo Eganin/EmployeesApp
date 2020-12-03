@@ -16,7 +16,7 @@ import com.example.employees.fragments.speciality.SpecialityFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
-    SpecialityAdapter.OnClickSpeciality, AddEmployeeFragment.SelectedImage {
+    SpecialityAdapter.OnClickSpeciality, AddEmployeeFragment.CreateEmployee {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +64,17 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
         val imageUri = data?.data
         val imageStream = contentResolver.openInputStream(imageUri!!)
         return BitmapFactory.decodeStream(imageStream)
+    }
+
+    override fun afterCreateEmployee() {
+        supportFragmentManager.beginTransaction().apply {
+            add(
+                R.id.main_container,
+                ListEmployeesFragment.newInstance(firstStart = false, specialty = null)
+                    .apply { setClickListener(listener = this@EmployeeActivity) })
+            addToBackStack(null)
+            commit()
+        }
     }
 
     private fun handlerClickNavigationView() {
