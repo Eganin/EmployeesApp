@@ -21,7 +21,7 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
             supportFragmentManager.beginTransaction().apply {
                 add(
                     R.id.main_container,
-                    ListEmployeesFragment.newInstance(specialty = null)
+                    ListEmployeesFragment.newInstance(firstStart = true, specialty = null)
                         .apply { setClickListener(listener = this@EmployeeActivity) })
                 addToBackStack(null)
                 commit()
@@ -45,11 +45,11 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
         }
     }
 
-    override fun clickSpeciality(specialityText : String) {
+    override fun clickSpeciality(specialityText: String) {
         supportFragmentManager.beginTransaction().apply {
             add(
                 R.id.main_container,
-                ListEmployeesFragment.newInstance(specialty = specialityText)
+                ListEmployeesFragment.newInstance(firstStart = false, specialty = specialityText)
                     .apply { setClickListener(listener = this@EmployeeActivity) })
             addToBackStack(null)
             commit()
@@ -74,7 +74,8 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
                     supportFragmentManager.beginTransaction().apply {
                         replace(
                             R.id.main_container,
-                            ListEmployeesFragment.newInstance(specialty = null).apply { setClickListener(listener = this@EmployeeActivity) })
+                            ListEmployeesFragment.newInstance(firstStart = false, specialty = null)
+                                .apply { setClickListener(listener = this@EmployeeActivity) })
                         addToBackStack(null)
                         commit()
                     }

@@ -9,7 +9,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.employees.R
 import com.example.employees.adapters.EmployeeAdapter
 import com.example.employees.application.EmployeeApp
@@ -35,27 +37,20 @@ class ListEmployeesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel =
             ViewModelProviders.of(this@ListEmployeesFragment)[ListEmployeeViewModel::class.java]
-        loadData()
         setupRecyclerView()
+        setupTouchListener()
+        setupFloatButton()
+
+        if (arguments?.getBoolean(SAVE_FIRST_START) == true) {
+            loadData()
+        }
+
         if (arguments?.getString(SAVE_SPECIALITY) == null) {
             observeData()
         } else {
             observeDataSpeciality(value = arguments?.getString(SAVE_SPECIALITY)!!)
         }
 
-        shuffle_float_button.apply {
-            setOnClickListener {
-                val shuffledList = adapter.getData().shuffled()
-                val originalList = adapter.getData()
-                adapter.bindEmployees(shuffledList)
-
-                val diffUtilCallback =
-                    DiffUtilCallback(oldData = originalList, newData = shuffledList)
-                val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(diffUtilCallback)
-                diffResult.dispatchUpdatesTo(adapter)
-
-            }
-        }
     }
 
     override fun onAttach(context: Context) {
@@ -110,16 +105,53 @@ class ListEmployeesFragment : Fragment() {
         viewModel.loadData(api = (activity?.application as? EmployeeApp)?.apiServiceEmployees)
     }
 
+    private fun setupTouchListener() {
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                // реагирует на свайп
+                viewModel.deleteEmployee(employee = adapter.getData()[viewHolder.adapterPosition-1])
+            }
+        }).attachToRecyclerView(main_recycler_view_employees)
+    }
+
+    private fun setupFloatButton() {
+        shuffle_float_button.apply {
+            setOnClickListener {
+                val shuffledList = adapter.getData().shuffled()
+                val originalList = adapter.getData()
+                adapter.bindEmployees(shuffledList)
+
+                val diffUtilCallback =
+                    DiffUtilCallback(oldData = originalList, newData = shuffledList)
+                val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(diffUtilCallback)
+                diffResult.dispatchUpdatesTo(adapter)
+
+            }
+        }
+    }
+
     companion object {
 
-        fun newInstance(specialty: String?): ListEmployeesFragment {
+        fun newInstance(firstStart: Boolean, specialty: String?): ListEmployeesFragment {
             val args = Bundle()
             val fragment = ListEmployeesFragment()
             specialty?.let { args.putString(SAVE_SPECIALITY, it) }
+            args.putBoolean(SAVE_FIRST_START, firstStart)
             fragment.arguments = args
             return fragment
         }
 
         const val SAVE_SPECIALITY = "SAVE_SPECIALITY"
+        const val SAVE_FIRST_START = "SAVE_FIRST_START"
     }
 }
