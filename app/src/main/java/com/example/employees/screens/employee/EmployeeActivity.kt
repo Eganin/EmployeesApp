@@ -1,8 +1,5 @@
 package com.example.employees.screens.employee
 
-import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.employees.R
@@ -25,7 +22,7 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
             supportFragmentManager.beginTransaction().apply {
                 add(
                     R.id.main_container,
-                    ListEmployeesFragment.newInstance(firstStart = true, specialty = null)
+                    ListEmployeesFragment.newInstance(specialty = null)
                         .apply { setClickListener(listener = this@EmployeeActivity) })
                 addToBackStack(null)
                 commit()
@@ -53,24 +50,18 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
         supportFragmentManager.beginTransaction().apply {
             add(
                 R.id.main_container,
-                ListEmployeesFragment.newInstance(firstStart = false, specialty = specialityText)
+                ListEmployeesFragment.newInstance(specialty = specialityText)
                     .apply { setClickListener(listener = this@EmployeeActivity) })
             addToBackStack(null)
             commit()
         }
     }
 
-    override fun getImageFromIntent(data: Intent?): Bitmap {
-        val imageUri = data?.data
-        val imageStream = contentResolver.openInputStream(imageUri!!)
-        return BitmapFactory.decodeStream(imageStream)
-    }
-
     override fun afterCreateEmployee() {
         supportFragmentManager.beginTransaction().apply {
             add(
                 R.id.main_container,
-                ListEmployeesFragment.newInstance(firstStart = false, specialty = null)
+                ListEmployeesFragment.newInstance(specialty = null)
                     .apply { setClickListener(listener = this@EmployeeActivity) })
             addToBackStack(null)
             commit()
@@ -95,7 +86,7 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
                     supportFragmentManager.beginTransaction().apply {
                         replace(
                             R.id.main_container,
-                            ListEmployeesFragment.newInstance(firstStart = false, specialty = null)
+                            ListEmployeesFragment.newInstance(specialty = null)
                                 .apply { setClickListener(listener = this@EmployeeActivity) })
                         addToBackStack(null)
                         commit()

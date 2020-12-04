@@ -41,10 +41,6 @@ class ListEmployeesFragment : Fragment() {
         setupTouchListener()
         setupFloatButton()
 
-        if (arguments?.getBoolean(SAVE_FIRST_START) == true) {
-            loadData()
-        }
-
         if (arguments?.getString(SAVE_SPECIALITY) == null) {
             observeData()
         } else {
@@ -83,14 +79,15 @@ class ListEmployeesFragment : Fragment() {
             adapter.notifyDataSetChanged()
         })
         viewModel.errors.observe(this@ListEmployeesFragment, {
-            Toast.makeText(requireContext(), "error", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), getString(R.string.error_message), Toast.LENGTH_LONG)
+                .show()
         })
     }
 
     private fun observeDataSpeciality(value: String) {
         viewModel.employees?.observe(this@ListEmployeesFragment, {
             adapter.bindEmployees(it.filter {
-                DetailInfoFragment.getNameSpeciality(it) == value
+                DetailInfoFragment.getSpeciality(it).name == value
             })
 
             adapter.notifyDataSetChanged()
@@ -119,7 +116,7 @@ class ListEmployeesFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 // реагирует на свайп
-                viewModel.deleteEmployee(employee = adapter.getData()[viewHolder.adapterPosition-1])
+                viewModel.deleteEmployee(employee = adapter.getData()[viewHolder.adapterPosition - 1])
             }
         }).attachToRecyclerView(main_recycler_view_employees)
     }
@@ -138,20 +135,24 @@ class ListEmployeesFragment : Fragment() {
 
             }
         }
+
+        load_data_float_button.apply {
+            setOnClickListener {
+                loadData()
+            }
+        }
     }
 
     companion object {
 
-        fun newInstance(firstStart: Boolean, specialty: String?): ListEmployeesFragment {
+        fun newInstance(specialty: String?): ListEmployeesFragment {
             val args = Bundle()
             val fragment = ListEmployeesFragment()
             specialty?.let { args.putString(SAVE_SPECIALITY, it) }
-            args.putBoolean(SAVE_FIRST_START, firstStart)
             fragment.arguments = args
             return fragment
         }
 
         const val SAVE_SPECIALITY = "SAVE_SPECIALITY"
-        const val SAVE_FIRST_START = "SAVE_FIRST_START"
     }
 }

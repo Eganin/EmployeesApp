@@ -79,7 +79,6 @@ class EmployeeAdapter : RecyclerView.Adapter<MainViewHolder>() {
 
     fun bindEmployees(employees: List<Employee>) {
         this.employees = employees
-        //notifyDataSetChanged()
     }
 
     fun getData() = employees

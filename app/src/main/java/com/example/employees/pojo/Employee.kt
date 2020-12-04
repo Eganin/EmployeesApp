@@ -1,5 +1,7 @@
 package com.example.employees.pojo
 
+import android.graphics.Bitmap
+import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
@@ -33,5 +35,7 @@ data class Employee(
 
     @SerializedName("specialty")
     @Expose
-    var specialty: List<Specialty>? = null
+    var specialty: List<Specialty>? = null,
+
+    var avatarNew : String? = null
 )

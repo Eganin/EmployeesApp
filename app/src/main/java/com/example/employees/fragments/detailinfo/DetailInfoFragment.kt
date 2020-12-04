@@ -1,14 +1,11 @@
 package com.example.employees.fragments.detailinfo
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.bumptech.glide.Glide
 import com.example.employees.R
 import com.example.employees.pojo.Employee
 import com.example.employees.pojo.Specialty
@@ -31,7 +28,6 @@ class DetailInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getInfoFromEmployee()
-
     }
 
 
@@ -43,35 +39,27 @@ class DetailInfoFragment : Fragment() {
         second_name_value.text =
             employee.lastName?.toLowerCase(Locale.ROOT)?.capitalize(Locale.ROOT)
         birthday_value.text = employee.birthday
-        speciality_value.text = getNameSpeciality(employee = employee)
+        speciality_value.text = getSpeciality(employee = employee).name
         viewModel.insertSpeciality(speciality = getSpeciality(employee = employee))
 
-        Glide.with(requireContext())
-            .load(employee.avatarUrl)
-            .apply(EmployeeViewHolder.imageOptions)
-            .into(detail_poster)
+        EmployeeViewHolder.downloadImage(
+            context = requireContext(),
+            imageAvatar = detail_poster,
+            avatarUrl = employee.avatarUrl,
+            avatarNew = employee.avatarNew
+        )
 
     }
-
-    private fun getSpeciality(employee: Employee): Specialty {
-        val gson = Gson()
-        val objects = gson.fromJson(employee.specialty.toString(), ArrayList::class.java)
-        val specialties = mutableListOf<Specialty>()
-        objects.forEach { specialties.add(gson.fromJson(it.toString(), Specialty::class.java)) }
-
-        return specialties[0]
-    }
-
 
     companion object {
 
-        fun getNameSpeciality(employee: Employee): String? {
+        fun getSpeciality(employee: Employee): Specialty {
             val gson = Gson()
             val objects = gson.fromJson(employee.specialty.toString(), ArrayList::class.java)
             val specialties = mutableListOf<Specialty>()
             objects.forEach { specialties.add(gson.fromJson(it.toString(), Specialty::class.java)) }
 
-            return specialties[0].name
+            return specialties[0]
         }
 
         fun newInstance(id: Int): DetailInfoFragment {

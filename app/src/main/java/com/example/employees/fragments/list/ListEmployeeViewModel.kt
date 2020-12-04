@@ -43,7 +43,7 @@ class ListEmployeeViewModel(application: Application) : AndroidViewModel(applica
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
-                        deleteAllEmployees()
+                        //deleteAllEmployees()
                         insertEmployees(list = it.response!!)
                     }, {
                         errors.value = it

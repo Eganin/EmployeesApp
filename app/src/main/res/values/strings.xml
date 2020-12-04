@@ -20,4 +20,5 @@
     <string name="choice_date_label">Choice date:</string>
     <string name="add_emplouee_toast">Employee added</string>
     <string name="error_toast">Input data , please</string>
+    <string name="error_message">error</string>
 </resources>
