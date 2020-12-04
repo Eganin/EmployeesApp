@@ -13,7 +13,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
+import com.bumptech.glide.util.Util
 import com.example.employees.R
+import com.example.employees.comon.Utils
 import com.example.employees.fragments.list.ListEmployeeViewModel
 import com.example.employees.fragments.speciality.SpecialityViewModel
 import com.example.employees.pojo.Employee
@@ -23,13 +25,13 @@ import kotlinx.android.synthetic.main.add_employee_fragment.*
 
 class AddEmployeeFragment : Fragment() {
 
-    private lateinit var currentAvatar : Uri
+    private lateinit var currentAvatar: Uri
 
     interface CreateEmployee {
         fun afterCreateEmployee()
     }
 
-    private var createEmployee : CreateEmployee? = null
+    private var createEmployee: CreateEmployee? = null
 
     private lateinit var viewModel: SpecialityViewModel
     private lateinit var viewModelListEmployee: ListEmployeeViewModel
@@ -50,7 +52,7 @@ class AddEmployeeFragment : Fragment() {
             startActivityForResult(pickerIntent, REQUEST_CODE_IMAGE)
         }
 
-        birthday_edit.setOnClickListener{
+        birthday_edit.setOnClickListener {
             val datePickerDialog = DatePickerDialog(
                 requireContext(),
                 { p0, p1, p2, p3 ->
@@ -79,10 +81,15 @@ class AddEmployeeFragment : Fragment() {
                     )
                 )
 
-                Toast.makeText(requireContext(), getString(R.string.add_emplouee_toast), Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.add_emplouee_toast),
+                    Toast.LENGTH_LONG
+                ).show()
                 createEmployee?.afterCreateEmployee()
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), getString(R.string.error_toast), Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), getString(R.string.error_toast), Toast.LENGTH_LONG)
+                    .show()
             }
         }
     }
@@ -92,10 +99,11 @@ class AddEmployeeFragment : Fragment() {
         when (requestCode) {
             REQUEST_CODE_IMAGE -> {
                 currentAvatar = data?.data!!
-                Glide.with(requireContext())
-                    .load(currentAvatar)
-                    .apply(EmployeeViewHolder.imageOptions)
-                    .into(add_image_employee)
+                Utils.downloadImage(
+                    context = requireContext(),
+                    imageAvatar = add_image_employee,
+                    avatarNew = currentAvatar.toString()
+                )
             }
         }
     }

@@ -1,7 +1,5 @@
 package com.example.employees.pojo
 
-import android.graphics.Bitmap
-import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters

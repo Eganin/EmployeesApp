@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.employees.R
-import com.example.employees.pojo.Employee
-import com.example.employees.pojo.Specialty
+import com.example.employees.comon.Utils
 import com.example.employees.viewholders.EmployeeViewHolder
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.detail_info_fragment.*
@@ -39,10 +38,10 @@ class DetailInfoFragment : Fragment() {
         second_name_value.text =
             employee.lastName?.toLowerCase(Locale.ROOT)?.capitalize(Locale.ROOT)
         birthday_value.text = employee.birthday
-        speciality_value.text = getSpeciality(employee = employee).name
-        viewModel.insertSpeciality(speciality = getSpeciality(employee = employee))
+        speciality_value.text = Utils.getSpeciality(employee = employee).name
+        viewModel.insertSpeciality(speciality = Utils.getSpeciality(employee = employee))
 
-        EmployeeViewHolder.downloadImage(
+        Utils.downloadImage(
             context = requireContext(),
             imageAvatar = detail_poster,
             avatarUrl = employee.avatarUrl,
@@ -53,14 +52,6 @@ class DetailInfoFragment : Fragment() {
 
     companion object {
 
-        fun getSpeciality(employee: Employee): Specialty {
-            val gson = Gson()
-            val objects = gson.fromJson(employee.specialty.toString(), ArrayList::class.java)
-            val specialties = mutableListOf<Specialty>()
-            objects.forEach { specialties.add(gson.fromJson(it.toString(), Specialty::class.java)) }
-
-            return specialties[0]
-        }
 
         fun newInstance(id: Int): DetailInfoFragment {
             val fragment = DetailInfoFragment()

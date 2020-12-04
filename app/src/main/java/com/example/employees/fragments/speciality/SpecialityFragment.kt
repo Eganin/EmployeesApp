@@ -49,6 +49,7 @@ class SpecialityFragment : Fragment() {
 
         viewModel.specialities?.observe(this@SpecialityFragment, {
             adapter.bindSpecialties(specialties = it)
+            adapter.notifyDataSetChanged()
         })
     }
 }

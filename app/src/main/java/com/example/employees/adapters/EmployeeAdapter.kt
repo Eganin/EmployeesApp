@@ -22,15 +22,15 @@ class EmployeeAdapter : RecyclerView.Adapter<MainViewHolder>() {
 
     override fun getItemViewType(position: Int) =
         when (position) {
-            0 -> ViewTypes.VIEW_HEADER.value
-            employees.size + 1 -> ViewTypes.VIEW_HEADER.value
+            0 -> ViewTypes.VIEW_INFO.value
+            employees.size + 1 -> ViewTypes.VIEW_INFO.value
             else -> ViewTypes.VIEW_EMPLOYEE.value
         }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder =
         when (viewType) {
-            ViewTypes.VIEW_HEADER.value -> {
+            ViewTypes.VIEW_INFO.value -> {
                 InfoViewHolder(
                     itemView = LayoutInflater.from(parent.context)
                         .inflate(R.layout.info_item, parent, false)
@@ -85,6 +85,6 @@ class EmployeeAdapter : RecyclerView.Adapter<MainViewHolder>() {
 }
 
 enum class ViewTypes(val value: Int) {
-    VIEW_HEADER(value = 1),
+    VIEW_INFO(value = 1),
     VIEW_EMPLOYEE(value = 2),
 }

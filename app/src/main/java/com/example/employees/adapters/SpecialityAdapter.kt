@@ -9,27 +9,23 @@ import com.example.employees.R
 import com.example.employees.pojo.Specialty
 import com.example.employees.viewholders.InfoViewHolder
 import com.example.employees.viewholders.MainViewHolder
+import com.example.employees.viewholders.SpecialityViewHolder
 
 class SpecialityAdapter :
     RecyclerView.Adapter<MainViewHolder>() {
 
     private var specialties: List<Specialty> = listOf()
 
-    interface OnClickSpeciality {
-        fun clickSpeciality(specialityText: String)
-    }
-
-    var onClickSpeciality: OnClickSpeciality? = null
 
     override fun getItemViewType(position: Int) =
         when (position) {
-            specialties.size -> ViewTypes.VIEW_HEADER.value
+            specialties.size -> ViewTypes.VIEW_INFO.value
             else -> ViewTypes.VIEW_EMPLOYEE.value
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder =
         when (viewType) {
-            ViewTypes.VIEW_HEADER.value -> {
+            ViewTypes.VIEW_INFO.value -> {
                 InfoViewHolder(
                     itemView = LayoutInflater.from(parent.context)
                         .inflate(R.layout.info_item, parent, false)
@@ -62,18 +58,6 @@ class SpecialityAdapter :
 
     fun bindSpecialties(specialties: List<Specialty>) {
         this.specialties = specialties
-        notifyDataSetChanged()
     }
 
-    inner class SpecialityViewHolder(itemView: View) : MainViewHolder(itemView = itemView) {
-
-        private val specialtyText = itemView.findViewById<AppCompatTextView>(R.id.speciality)
-
-        fun bind(specialty: Specialty) {
-            specialtyText.text = specialty.name
-            itemView.apply {
-                setOnClickListener { onClickSpeciality?.clickSpeciality(specialityText = specialtyText.text.toString()) }
-            }
-        }
-    }
 }

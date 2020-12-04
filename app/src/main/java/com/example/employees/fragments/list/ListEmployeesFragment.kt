@@ -16,6 +16,7 @@ import com.example.employees.R
 import com.example.employees.adapters.EmployeeAdapter
 import com.example.employees.application.EmployeeApp
 import com.example.employees.comon.DiffUtilCallback
+import com.example.employees.comon.Utils
 import com.example.employees.comon.WrapContentLinearLayoutManager
 import com.example.employees.fragments.detailinfo.DetailInfoFragment
 import com.example.employees.pojo.Employee
@@ -87,7 +88,7 @@ class ListEmployeesFragment : Fragment() {
     private fun observeDataSpeciality(value: String) {
         viewModel.employees?.observe(this@ListEmployeesFragment, {
             adapter.bindEmployees(it.filter {
-                DetailInfoFragment.getSpeciality(it).name == value
+                Utils.getSpeciality(it).name == value
             })
 
             adapter.notifyDataSetChanged()
