@@ -15,6 +15,7 @@ import com.google.gson.annotations.SerializedName
 data class Specialty(
 
 
+    @ColumnInfo(name="id")
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null,
 

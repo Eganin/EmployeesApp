@@ -17,6 +17,7 @@ class SpecialityFragment : Fragment() {
     private lateinit var viewModel: SpecialityViewModel
     private val adapter = SpecialityAdapter()
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

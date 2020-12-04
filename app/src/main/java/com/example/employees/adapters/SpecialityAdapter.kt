@@ -9,13 +9,17 @@ import com.example.employees.R
 import com.example.employees.pojo.Specialty
 import com.example.employees.viewholders.InfoViewHolder
 import com.example.employees.viewholders.MainViewHolder
-import com.example.employees.viewholders.SpecialityViewHolder
 
 class SpecialityAdapter :
     RecyclerView.Adapter<MainViewHolder>() {
 
     private var specialties: List<Specialty> = listOf()
 
+    interface OnClickSpeciality {
+        fun clickSpeciality(specialityText: String)
+    }
+
+    var onClickSpeciality: OnClickSpeciality? = null
 
     override fun getItemViewType(position: Int) =
         when (position) {
@@ -60,4 +64,15 @@ class SpecialityAdapter :
         this.specialties = specialties
     }
 
+    inner class SpecialityViewHolder(itemView: View) : MainViewHolder(itemView = itemView) {
+
+        private val specialtyText = itemView.findViewById<AppCompatTextView>(R.id.speciality)
+
+        fun bind(specialty: Specialty) {
+            specialtyText.text = specialty.name
+            itemView.apply {
+                setOnClickListener { onClickSpeciality?.clickSpeciality(specialityText = specialtyText.text.toString()) }
+            }
+        }
+    }
 }

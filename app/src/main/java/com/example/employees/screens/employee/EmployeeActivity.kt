@@ -10,11 +10,10 @@ import com.example.employees.fragments.addemployee.AddEmployeeFragment
 import com.example.employees.fragments.detailinfo.DetailInfoFragment
 import com.example.employees.fragments.list.ListEmployeesFragment
 import com.example.employees.fragments.speciality.SpecialityFragment
-import com.example.employees.viewholders.SpecialityViewHolder
 import kotlinx.android.synthetic.main.activity_main.*
 
 class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
-    SpecialityViewHolder.OnClickSpeciality, AddEmployeeFragment.CreateEmployee {
+    SpecialityAdapter.OnClickSpeciality, AddEmployeeFragment.CreateEmployee {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +59,7 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
 
     override fun afterCreateEmployee() {
         supportFragmentManager.beginTransaction().apply {
-            add(
+            replace(
                 R.id.main_container,
                 ListEmployeesFragment.newInstance(specialty = null)
                     .apply { setClickListener(listener = this@EmployeeActivity) })

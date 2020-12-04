@@ -5,22 +5,26 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.bumptech.glide.Glide
-import com.bumptech.glide.util.Util
 import com.example.employees.R
+import com.example.employees.comon.EmployeeSave
 import com.example.employees.comon.Utils
+import com.example.employees.exceptions.ExceptionFromSendData
 import com.example.employees.fragments.list.ListEmployeeViewModel
 import com.example.employees.fragments.speciality.SpecialityViewModel
 import com.example.employees.pojo.Employee
 import com.example.employees.pojo.Specialty
-import com.example.employees.viewholders.EmployeeViewHolder
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.add_employee_fragment.*
 
 class AddEmployeeFragment : Fragment() {
@@ -68,7 +72,6 @@ class AddEmployeeFragment : Fragment() {
 
         send_data.setOnClickListener {
             try {
-
                 viewModelListEmployee.insertEmployees(
                     listOf(
                         Employee(
@@ -88,6 +91,7 @@ class AddEmployeeFragment : Fragment() {
                 ).show()
                 createEmployee?.afterCreateEmployee()
             } catch (e: Exception) {
+                e.printStackTrace()
                 Toast.makeText(requireContext(), getString(R.string.error_toast), Toast.LENGTH_LONG)
                     .show()
             }
@@ -120,10 +124,36 @@ class AddEmployeeFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        val json = JsonObject()
+        try{
+            json.addProperty("first_name", name_label_edit.editText?.text.toString())
+            json.addProperty("last_name", last_name_edit.editText?.text.toString())
+            json.addProperty("birthday", birthday_edit.text.toString())
+            json.addProperty("speciality_position", speciality_edit.selectedItemPosition)
+            json.addProperty("uri_image", currentAvatar.toString())
+        }catch (e : Exception){
+            e.printStackTrace()
+
+        }
+
+        outState.putString(SAVE_JSON_DATA, Gson().toJson(json))
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
+        try{
+            val result =
+                Gson().fromJson(savedInstanceState?.getString(SAVE_JSON_DATA), EmployeeSave::class.java)
+            name_label_edit.editText?.setText(result.firstName , TextView.BufferType.EDITABLE)
+            last_name_edit.editText?.setText(result.lastName,TextView.BufferType.EDITABLE)
+            birthday_edit.text = result.birthday
+            speciality_edit.setSelection(result.specialtyPosition)
+            Log.d("AAA",result.specialtyPosition.toString())
+            Log.d("AAA",result.uriImage)
+            add_image_employee.setImageURI(Uri.parse(result.uriImage))
+        }catch (e : Exception){
+            e.printStackTrace()
+        }
     }
 
 
@@ -140,6 +170,7 @@ class AddEmployeeFragment : Fragment() {
     }
 
     companion object {
-        const val REQUEST_CODE_IMAGE = 1231
+        private const val REQUEST_CODE_IMAGE = 1231
+        private const val SAVE_JSON_DATA = "SAVE_JSON_DATA"
     }
 }
