@@ -104,14 +104,20 @@ class AddEmployeeFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
+
             REQUEST_CODE_IMAGE -> {
-                currentAvatar = data?.data!!
-                Utils.downloadImage(
-                    context = requireContext(),
-                    imageAvatar = add_image_employee,
-                    avatarNew = currentAvatar.toString()
-                )
+                try{
+                    currentAvatar = data?.data!!
+                    Utils.downloadImage(
+                        context = requireContext(),
+                        imageAvatar = add_image_employee,
+                        avatarNew = currentAvatar.toString()
+                    )
+                }catch (e : Exception){
+
+                }
             }
+
         }
     }
 
@@ -128,13 +134,13 @@ class AddEmployeeFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         val json = JsonObject()
-        try{
+        try {
             json.addProperty("first_name", name_label_edit.editText?.text.toString())
             json.addProperty("last_name", last_name_edit.editText?.text.toString())
             json.addProperty("birthday", birthday_edit.text.toString())
             json.addProperty("speciality_position", speciality_edit.selectedItemPosition)
             json.addProperty("uri_image", currentAvatar.toString())
-        }catch (e : Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
 
         }
@@ -144,17 +150,20 @@ class AddEmployeeFragment : Fragment() {
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        try{
+        try {
             val result =
-                Gson().fromJson(savedInstanceState?.getString(SAVE_JSON_DATA), EmployeeSave::class.java)
-            name_label_edit.editText?.setText(result.firstName , TextView.BufferType.EDITABLE)
-            last_name_edit.editText?.setText(result.lastName,TextView.BufferType.EDITABLE)
+                Gson().fromJson(
+                    savedInstanceState?.getString(SAVE_JSON_DATA),
+                    EmployeeSave::class.java
+                )
+            name_label_edit.editText?.setText(result.firstName, TextView.BufferType.EDITABLE)
+            last_name_edit.editText?.setText(result.lastName, TextView.BufferType.EDITABLE)
             birthday_edit.text = result.birthday
             speciality_edit.setSelection(result.specialtyPosition)
-            Log.d("AAA",result.specialtyPosition.toString())
-            Log.d("AAA",result.uriImage)
+            Log.d("AAA", result.specialtyPosition.toString())
+            Log.d("AAA", result.uriImage)
             add_image_employee.setImageURI(Uri.parse(result.uriImage))
-        }catch (e : Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
