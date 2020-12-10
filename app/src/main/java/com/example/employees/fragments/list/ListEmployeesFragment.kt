@@ -154,6 +154,9 @@ class ListEmployeesFragment : Fragment() {
             return fragment
         }
 
+        fun removeEmployee(){
+        }
+
         const val SAVE_SPECIALITY = "SAVE_SPECIALITY"
     }
 }

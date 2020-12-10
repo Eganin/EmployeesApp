@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +17,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.employees.R
 import com.example.employees.comon.EmployeeSave
 import com.example.employees.comon.Utils
-import com.example.employees.exceptions.ExceptionFromSendData
 import com.example.employees.fragments.list.ListEmployeeViewModel
 import com.example.employees.fragments.speciality.SpecialityViewModel
 import com.example.employees.pojo.Employee
@@ -26,6 +24,7 @@ import com.example.employees.pojo.Specialty
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.add_employee_fragment.*
+import java.util.*
 
 class AddEmployeeFragment : Fragment() {
 
@@ -57,14 +56,18 @@ class AddEmployeeFragment : Fragment() {
         }
 
         birthday_edit.setOnClickListener {
+            val currentCalendar = Calendar.getInstance()
+            val year = currentCalendar[Calendar.YEAR]
+            val month = currentCalendar[Calendar.MONTH]
+            val day = currentCalendar[Calendar.DAY_OF_MONTH]
             val datePickerDialog = DatePickerDialog(
                 requireContext(),
                 { p0, p1, p2, p3 ->
                     birthday_edit.text = "$p3-$p2-$p1"
                 },
-                0,
-                0,
-                0
+                year,
+                month,
+                day
             )
 
             datePickerDialog.show()

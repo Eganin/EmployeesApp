@@ -5,15 +5,17 @@ import android.os.Bundle
 import com.example.employees.R
 import com.example.employees.adapters.EmployeeAdapter
 import com.example.employees.adapters.SpecialityAdapter
+import com.example.employees.comon.SampleBottomSheet
 import com.example.employees.exceptions.ExceptionFromNavigationView
 import com.example.employees.fragments.addemployee.AddEmployeeFragment
 import com.example.employees.fragments.detailinfo.DetailInfoFragment
 import com.example.employees.fragments.list.ListEmployeesFragment
 import com.example.employees.fragments.speciality.SpecialityFragment
+import com.example.employees.pojo.Employee
 import kotlinx.android.synthetic.main.activity_main.*
 
 class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
-    SpecialityAdapter.OnClickSpeciality, AddEmployeeFragment.CreateEmployee {
+    SpecialityAdapter.OnClickSpeciality, AddEmployeeFragment.CreateEmployee , SampleBottomSheet.BottomSheetListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +48,11 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
         }
     }
 
+    override fun onLongClick(employee: Employee) {
+        val dialog = SampleBottomSheet(employee=employee)
+        dialog.show(supportFragmentManager , "newDialog")
+    }
+
     override fun clickSpeciality(specialityText: String) {
         supportFragmentManager.beginTransaction().apply {
             add(
@@ -66,6 +73,14 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
             addToBackStack(null)
             commit()
         }
+    }
+
+    override fun positiveClick(id : Int) {
+        click(id=id)
+    }
+
+    override fun negativeClick(id : Int) {
+        TODO("Not yet implemented")
     }
 
     private fun handlerClickNavigationView() {

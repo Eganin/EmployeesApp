@@ -21,4 +21,7 @@
     <string name="add_emplouee_toast">Employee added</string>
     <string name="error_toast">Input data , please</string>
     <string name="error_message">error</string>
+    <string name="choose_action_text">Choose action</string>
+    <string name="look_text_button">Look</string>
+    <string name="remove_text_button">Remove</string>
 </resources>

@@ -14,6 +14,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
+import java.lang.Exception
 
 class ListEmployeeViewModel(application: Application) : AndroidViewModel(application) {
     private val database = DatabaseEmployee.getInstance(context = application.applicationContext)
@@ -26,13 +27,11 @@ class ListEmployeeViewModel(application: Application) : AndroidViewModel(applica
 
     private val TAG = ListEmployeeViewModel::class.java.simpleName
 
-    private var uiScope = CoroutineScope(Dispatchers.Main + SupervisorJob() )
+    private var uiScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
         Log.d(TAG, "CoroutineExceptionHandler got $exception in $coroutineContext")
     }
-
-
 
     fun insertEmployees(list: List<Employee>) {
         uiScope.launch { insertEmployeesTask(params = list) }
@@ -45,6 +44,7 @@ class ListEmployeeViewModel(application: Application) : AndroidViewModel(applica
     private fun deleteAllEmployees() {
         uiScope.launch { deleteAllEmployeeTask() }
     }
+
 
     fun loadData(api: ApiServiceEmployees?) {
         api?.let {
@@ -62,6 +62,7 @@ class ListEmployeeViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
+
     private suspend fun insertEmployeesTask(params: List<Employee>?) = withContext(Dispatchers.IO) {
         params?.let { database?.employeeDao()?.insertEmployees(employees = it) }
     }
@@ -70,7 +71,7 @@ class ListEmployeeViewModel(application: Application) : AndroidViewModel(applica
         params?.let { database?.employeeDao()?.deleteEmployee(employee = it) }
     }
 
-    private suspend fun deleteAllEmployeeTask() = withContext(Dispatchers.IO){
+    private suspend fun deleteAllEmployeeTask() = withContext(Dispatchers.IO) {
         database?.employeeDao()?.deleteAllEmployees()
     }
 

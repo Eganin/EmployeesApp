@@ -16,6 +16,7 @@ class EmployeeAdapter : RecyclerView.Adapter<MainViewHolder>() {
 
     interface OnEmployeeClick {
         fun click(id: Int)
+        fun onLongClick(employee : Employee)
     }
 
     var onEmployeeClick: OnEmployeeClick? = null
@@ -58,6 +59,10 @@ class EmployeeAdapter : RecyclerView.Adapter<MainViewHolder>() {
                                 id = it
                             )
                         }
+                    }
+                    setOnLongClickListener {
+                        onEmployeeClick?.onLongClick(employee = employees[position])
+                        true
                     }
                 }
 
