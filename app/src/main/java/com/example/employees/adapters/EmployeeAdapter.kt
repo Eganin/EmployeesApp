@@ -61,7 +61,7 @@ class EmployeeAdapter : RecyclerView.Adapter<MainViewHolder>() {
                         }
                     }
                     setOnLongClickListener {
-                        onEmployeeClick?.onLongClick(employee = employees[position])
+                        onEmployeeClick?.onLongClick(employee = employees[position-1])
                         true
                     }
                 }

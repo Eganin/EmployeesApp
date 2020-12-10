@@ -2,6 +2,7 @@ package com.example.employees.screens.employee
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProviders
 import com.example.employees.R
 import com.example.employees.adapters.EmployeeAdapter
 import com.example.employees.adapters.SpecialityAdapter
@@ -9,26 +10,29 @@ import com.example.employees.comon.SampleBottomSheet
 import com.example.employees.exceptions.ExceptionFromNavigationView
 import com.example.employees.fragments.addemployee.AddEmployeeFragment
 import com.example.employees.fragments.detailinfo.DetailInfoFragment
+import com.example.employees.fragments.detailinfo.DetailInfoViewModel
+import com.example.employees.fragments.list.ListEmployeeViewModel
 import com.example.employees.fragments.list.ListEmployeesFragment
 import com.example.employees.fragments.speciality.SpecialityFragment
 import com.example.employees.pojo.Employee
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
     SpecialityAdapter.OnClickSpeciality, AddEmployeeFragment.CreateEmployee , SampleBottomSheet.BottomSheetListener {
+
+    val fragment = ListEmployeesFragment.newInstance(specialty = null)
+        .apply { setClickListener(listener = this@EmployeeActivity) }
+    private val uiScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction().apply {
-                add(
-                    R.id.main_container,
-                    ListEmployeesFragment.newInstance(specialty = null)
-                        .apply { setClickListener(listener = this@EmployeeActivity) })
-                addToBackStack(null)
-                commit()
-            }
+            createListEmployeeFragment()
         }
 
         try {
@@ -54,25 +58,11 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
     }
 
     override fun clickSpeciality(specialityText: String) {
-        supportFragmentManager.beginTransaction().apply {
-            add(
-                R.id.main_container,
-                ListEmployeesFragment.newInstance(specialty = specialityText)
-                    .apply { setClickListener(listener = this@EmployeeActivity) })
-            addToBackStack(null)
-            commit()
-        }
+        createListEmployeeFragment()
     }
 
     override fun afterCreateEmployee() {
-        supportFragmentManager.beginTransaction().apply {
-            replace(
-                R.id.main_container,
-                ListEmployeesFragment.newInstance(specialty = null)
-                    .apply { setClickListener(listener = this@EmployeeActivity) })
-            addToBackStack(null)
-            commit()
-        }
+        createListEmployeeFragment()
     }
 
     override fun positiveClick(id : Int) {
@@ -80,7 +70,20 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
     }
 
     override fun negativeClick(id : Int) {
-        TODO("Not yet implemented")
+         val viewModel =
+            ViewModelProviders.of(this@EmployeeActivity)[ListEmployeeViewModel::class.java]
+        val detailViewModel = ViewModelProviders.of(this@EmployeeActivity)[DetailInfoViewModel::class.java]
+        uiScope.launch { viewModel.deleteEmployee(employee = detailViewModel.getEmployeeById(id=id)) }
+    }
+
+    private fun createListEmployeeFragment(){
+        supportFragmentManager.beginTransaction().apply {
+            add(
+                R.id.main_container,
+                fragment)
+            addToBackStack(null)
+            commit()
+        }
     }
 
     private fun handlerClickNavigationView() {
@@ -101,8 +104,7 @@ class EmployeeActivity : AppCompatActivity(), EmployeeAdapter.OnEmployeeClick,
                     supportFragmentManager.beginTransaction().apply {
                         replace(
                             R.id.main_container,
-                            ListEmployeesFragment.newInstance(specialty = null)
-                                .apply { setClickListener(listener = this@EmployeeActivity) })
+                            fragment)
                         addToBackStack(null)
                         commit()
                     }

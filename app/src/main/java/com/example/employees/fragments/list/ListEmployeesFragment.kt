@@ -19,13 +19,20 @@ import com.example.employees.comon.DiffUtilCallback
 import com.example.employees.comon.Utils
 import com.example.employees.comon.WrapContentLinearLayoutManager
 import com.example.employees.fragments.detailinfo.DetailInfoFragment
+import com.example.employees.fragments.detailinfo.DetailInfoViewModel
 import com.example.employees.pojo.Employee
 import com.example.employees.pojo.Specialty
+import com.example.employees.screens.employee.EmployeeActivity
 import kotlinx.android.synthetic.main.fragment_list_employees.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 class ListEmployeesFragment : Fragment() {
 
     private lateinit var viewModel: ListEmployeeViewModel
+    private lateinit var detailViewModel : DetailInfoViewModel
     private val adapter = EmployeeAdapter()
 
     override fun onCreateView(
@@ -38,6 +45,7 @@ class ListEmployeesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel =
             ViewModelProviders.of(this@ListEmployeesFragment)[ListEmployeeViewModel::class.java]
+        detailViewModel = ViewModelProviders.of(this@ListEmployeesFragment)[DetailInfoViewModel::class.java]
         setupRecyclerView()
         setupTouchListener()
         setupFloatButton()
@@ -154,9 +162,8 @@ class ListEmployeesFragment : Fragment() {
             return fragment
         }
 
-        fun removeEmployee(){
-        }
 
         const val SAVE_SPECIALITY = "SAVE_SPECIALITY"
     }
+
 }

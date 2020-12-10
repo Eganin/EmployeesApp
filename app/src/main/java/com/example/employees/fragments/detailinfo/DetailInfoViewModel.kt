@@ -17,8 +17,6 @@ class DetailInfoViewModel(application: Application) : AndroidViewModel(applicati
         coroutineScope {
             employee = uiScope.async { getEmployeeByIdTask(params = id) }.await()!!
         }
-        println(employee.toString()+"----------------------------------")
-        println("----------------------------------")
         return employee
     }
 

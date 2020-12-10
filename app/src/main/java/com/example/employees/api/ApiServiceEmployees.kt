@@ -1,7 +1,6 @@
 package com.example.employees.api
 
 import com.example.employees.pojo.ResponseEmployees
-import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Headers

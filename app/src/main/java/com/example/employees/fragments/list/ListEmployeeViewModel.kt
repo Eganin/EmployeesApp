@@ -29,9 +29,6 @@ class ListEmployeeViewModel(application: Application) : AndroidViewModel(applica
 
     private var uiScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
-        Log.d(TAG, "CoroutineExceptionHandler got $exception in $coroutineContext")
-    }
 
     fun insertEmployees(list: List<Employee>) {
         uiScope.launch { insertEmployeesTask(params = list) }
