@@ -11,12 +11,14 @@ import com.example.employees.comon.Utils
 import com.example.employees.viewholders.EmployeeViewHolder
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.detail_info_fragment.*
+import kotlinx.coroutines.*
 import java.util.*
 
 class DetailInfoFragment : Fragment() {
 
 
     private lateinit var viewModel: DetailInfoViewModel
+    private var uiScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,13 +28,15 @@ class DetailInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getInfoFromEmployee()
+        uiScope.launch { getInfoFromEmployee() }
     }
 
 
-    private fun getInfoFromEmployee() {
+    private suspend fun getInfoFromEmployee() {
         viewModel = ViewModelProviders.of(this@DetailInfoFragment)[DetailInfoViewModel::class.java]
-        val employee = viewModel.getEmployeeById(id = arguments!!.getInt(SAVE_ID_EMPLOYEE))
+        val employee =
+            uiScope.async { viewModel.getEmployeeById(id = arguments!!.getInt(SAVE_ID_EMPLOYEE)) }
+                .await()
         name_label_value.text =
             employee.firstName?.toLowerCase(Locale.ROOT)?.capitalize(Locale.ROOT)
         second_name_value.text =

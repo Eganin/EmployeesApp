@@ -1,36 +1,38 @@
 package com.example.employees.fragments.detailinfo
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.os.AsyncTask
-import android.provider.ContactsContract
 import androidx.lifecycle.AndroidViewModel
 import com.example.employees.data.DatabaseEmployee
 import com.example.employees.pojo.Employee
 import com.example.employees.pojo.Specialty
+import kotlinx.coroutines.*
 
 class DetailInfoViewModel(application: Application) : AndroidViewModel(application) {
     private val database = DatabaseEmployee.getInstance(context = application.applicationContext)
 
-    fun getEmployeeById(id: Int): Employee {
-        return GetEmployeeByIdTask().execute(id).get()
+    private var uiScope = CoroutineScope(Dispatchers.Main + SupervisorJob() )
+    private lateinit var employee : Employee
+
+    suspend fun getEmployeeById(id: Int): Employee {
+        coroutineScope {
+            employee = uiScope.async { getEmployeeByIdTask(params = id) }.await()!!
+        }
+        println(employee.toString()+"----------------------------------")
+        println("----------------------------------")
+        return employee
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private inner class GetEmployeeByIdTask : AsyncTask<Int, Void, Employee>() {
-        override fun doInBackground(vararg params: Int?): Employee? =
-            params[0]?.let { database?.employeeDao()?.getEmployeeById(employeeId = it) }
-
+    private suspend  fun getEmployeeByIdTask(params : Int?) : Employee? = withContext(Dispatchers.IO) {
+        return@withContext params?.let { database?.employeeDao()?.getEmployeeById(employeeId = it) }
     }
+
 
     fun insertSpeciality(speciality: Specialty) {
-        InsertSpecialityTask().execute(speciality)
+        uiScope.launch { insertSpecialityTask(params = speciality) }
     }
 
-    private inner class InsertSpecialityTask : AsyncTask<Specialty, Void, Void>() {
-        override fun doInBackground(vararg params: Specialty?): Void? {
-            params[0]?.let { database?.employeeDao()?.insertSpeciality(speciality = it) }
-            return null
-        }
+    private suspend fun insertSpecialityTask(params: Specialty?) = withContext(Dispatchers.IO){
+        params?.let { database?.employeeDao()?.insertSpeciality(speciality = it) }
     }
+
 }
